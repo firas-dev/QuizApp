@@ -1,0 +1,174 @@
+{
+  "token": "your_valid_jwt_token_here",
+  "title": "HTML Basics Quiz",
+  "description": "Test your knowledge of HTML fundamentals.",
+  "questions": [
+    {
+      "questionText": "What does HTML stand for?",
+      "options": [
+        { "optionText": "HyperText Markup Language","optionIndex":"a", "isCorrect": true },
+        { "optionText": "Home Tool Markup Language","optionIndex":"b", "isCorrect": false },
+        { "optionText": "Hyperlinks and Text Markup Language","optionIndex":"c", "isCorrect": false }
+      ]
+    },
+    {
+      "questionText": "Which HTML tag is used to define a hyperlink?",
+      "options": [
+        { "optionText": "<a>", "isCorrect": true },
+        { "optionText": "<link>", "isCorrect": false },
+        { "optionText": "<href>", "isCorrect": false }
+      ]
+    },
+    {
+      "questionText": "What is the correct way to make text bold in HTML?",
+      "options": [
+        { "optionText": "<b>","optionIndex":"a", "isCorrect": true },
+        { "optionText": "<bold>","optionIndex":"b", "isCorrect": false },
+        { "optionText": "<strong>","optionIndex":"c", "isCorrect": true }
+      ]
+    }
+  ]
+}
+ 
+ *****************************************************************************************
+
+
+ {
+  "token": "your_valid_jwt_token_here",
+  "title": "CSS Fundamentals Quiz",
+  "description": "Assess your understanding of basic CSS concepts.",
+  "questions": [
+    {
+      "questionText": "What does CSS stand for?",
+      "options": [
+        { "optionText": "Cascading Style Sheets","optionIndex":"a", "isCorrect": true },
+        { "optionText": "Creative Style System","optionIndex":"b", "isCorrect": false },
+        { "optionText": "Computer Styling Syntax","optionIndex":"c", "isCorrect": false }
+      ]
+    },
+    {
+      "questionText": "Which property is used to change the background color in CSS?",
+      "options": [
+        { "optionText": "background-color","optionIndex":"a", "isCorrect": true },
+        { "optionText": "bgcolor","optionIndex":"b", "isCorrect": false },
+        { "optionText": "color","optionIndex":"c", "isCorrect": false }
+      ]
+    },
+    {
+      "questionText": "What is the correct way to apply an external CSS file?",
+      "options": [
+        { "optionText": "<link rel='stylesheet' href='style.css'>","optionIndex":"a", "isCorrect": true },
+        { "optionText": "<style src='style.css'>","optionIndex":"b", "isCorrect": false },
+        { "optionText": "<script href='style.css'>","optionIndex":"c", "isCorrect": false }
+      ]
+    }
+  ]
+}
+
+
+**************************************************************************************
+
+
+{
+  "token": "your_valid_jwt_token_here",
+  "title": "Python Basics Quiz",
+  "description": "Evaluate your knowledge of Python programming basics.",
+  "questions": [
+    {
+      "questionText": "Which keyword is used to create a function in Python?",
+      "options": [
+        { "optionText": "def","optionIndex":"a", "isCorrect": true },
+        { "optionText": "function","optionIndex":"b", "isCorrect": false },
+        { "optionText": "func","optionIndex":"c", "isCorrect": false }
+      ]
+    },
+    {
+      "questionText": "What is the output of print(2 ** 3)?",
+      "options": [
+        { "optionText": "8","optionIndex":"a", "isCorrect": true },
+        { "optionText": "6","optionIndex":"b", "isCorrect": false },
+        { "optionText": "9","optionIndex":"c", "isCorrect": false }
+      ]
+    },
+    {
+      "questionText": "How do you start a comment in Python?",
+      "options": [
+        { "optionText": "#","optionIndex":"a", "isCorrect": true },
+        { "optionText": "//","optionIndex":"b", "isCorrect": false },
+        { "optionText": "/* */","optionIndex":"c", "isCorrect": false }
+      ]
+    }
+  ]
+}
+
+
+************************************************************************************
+
+
+{
+  "token": "your_valid_jwt_token_here",
+  "title": "Python Basics Quiz",
+  "description": "Evaluate your knowledge of Python programming basics.",
+  "questions": [
+    {
+      "questionText": "Which keyword is used to create a function in Python?",
+      "options": [
+        { "optionText": "def","optionIndex":"a", "isCorrect": true },
+        { "optionText": "function","optionIndex":"b", "isCorrect": false },
+        { "optionText": "func","optionIndex":"c", "isCorrect": false }
+      ]
+    },
+    {
+      "questionText": "What is the output of print(2 ** 3)?",
+      "options": [
+        { "optionText": "8","optionIndex":"a", "isCorrect": true },
+        { "optionText": "6",,"optionIndex":"b" "isCorrect": false },
+        { "optionText": "9","optionIndex":"c", "isCorrect": false }
+      ]
+    },
+    {
+      "questionText": "How do you start a comment in Python?",
+      "options": [
+        { "optionText": "#","optionIndex":"a", "isCorrect": true },
+        { "optionText": "//","optionIndex":"b", "isCorrect": false },
+        { "optionText": "/* */","optionIndex":"c", "isCorrect": false }
+      ]
+    }
+  ]
+}
+
+
+***************************************************************************************
+
+
+{
+  "token": "your_valid_jwt_token_here",
+  "title": "DBMS Quiz",
+  "description": "Quiz on basic concepts of Database Management Systems.",
+  "questions": [
+    {
+      "questionText": "Which of the following is an example of a DBMS?",
+      "options": [
+        { "optionText": "MySQL","optionIndex":"a", "isCorrect": true },
+        { "optionText": "Microsoft Word","optionIndex":"b", "isCorrect": false },
+        { "optionText": "Adobe Photoshop","optionIndex":"c", "isCorrect": false }
+      ]
+    },
+    {
+      "questionText": "What does SQL stand for?",
+      "options": [
+        { "optionText": "Structured Query Language","optionIndex":"a", "isCorrect": true },
+        { "optionText": "Simple Query Language","optionIndex":"b", "isCorrect": false },
+        { "optionText": "Sequential Query Language","optionIndex":"c", "isCorrect": false }
+      ]
+    },
+    {
+      "questionText": "Which key uniquely identifies a record in a table?",
+      "options": [
+        { "optionText": "Primary Key", "isCorrect": true },
+        { "optionText": "Foreign Key", "isCorrect": false },
+        { "optionText": "Composite Key", "isCorrect": false }
+      ]
+    }
+  ]
+}
