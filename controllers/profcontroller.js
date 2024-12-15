@@ -1,9 +1,15 @@
 const bcrypt = require('bcrypt'); 
+const crypto = require("crypto");
 const jwt = require('jsonwebtoken');
+const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./.env" });
 const Professor = require('../models/profModel');
 const Quiz = require('../models/quizModel');
+
+const{sendMail}=require('./mailverif'); 
+
+
 // ****************************** signUp for professors ***************************************
 exports.registerProfessor = async (req, res) => {
     const { name, email, password } = req.body;
@@ -13,15 +19,24 @@ exports.registerProfessor = async (req, res) => {
         return res.status(400).json({ message: 'Ce professeur est déjà inscrit' });
       }
       const hashedPassword = await bcrypt.hash(password, 10);
+      const verificationToken = crypto.randomBytes(32).toString("hex");
 
       const newProfessor = new Professor({
         name,
         email,
         password: hashedPassword,
+        verificationToken,
+        isVerified: false,
       });
   
       await newProfessor.save();
-      res.status(201).json({ message: 'Professeur inscrit avec succès' });
+
+      const verificationLink = `http://localhost:${process.env.PORT}/prof/verif?token=${verificationToken}`;
+      const emailText = `Bonjour ${name},\n\nVeuillez vérifier votre adresse e-mail en cliquant sur le lien suivant :\n${verificationLink}\n\nMerci.`;
+      await  sendMail(email, "Vérification de l'adresse e-mail", emailText);
+
+
+      res.status(201).json({ message: 'Professeur inscrit avec succès , Veuillez vérifier votre e-mail pour activer votre compte."' });
     } catch (error) {
       res.status(500).json({ message: 'Une erreur est survenue', error: error.message });
     }

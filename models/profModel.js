@@ -6,7 +6,9 @@ const professorSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, default: 'professor' }
+  role: { type: String, default: 'professor' },
+  verificationToken:{type: String,required: false}, 
+  isVerified:{type:Boolean,default:'false'}
 });
 
 const Professor = mongoose.model('Professor', professorSchema);
