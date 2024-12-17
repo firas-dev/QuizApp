@@ -16,29 +16,28 @@ exports.registerProfessor = async (req, res) => {
     try {
       const existingProfessor = await Professor.findOne({ email });
       if (existingProfessor) {
-        return res.status(400).json({ message: 'Ce professeur est déjà inscrit' });
+        return res.status(400).json({ message: 'you already have an account !! try to login' });
       }
       const hashedPassword = await bcrypt.hash(password, 10);
-      const verificationToken = crypto.randomBytes(32).toString("hex");
+      const verificationkey = crypto.randomBytes(32).toString("hex");
 
       const newProfessor = new Professor({
         name,
         email,
         password: hashedPassword,
-        verificationToken,
+        verificationkey,
         isVerified: false,
       });
   
       await newProfessor.save();
 
-      const verificationLink = `http://localhost:${process.env.PORT}/prof/verif?token=${verificationToken}`;
+      const verificationLink = `http://localhost:${process.env.PORT}/prof/verif?token=${verificationkey}`;
       const emailText = `Bonjour ${name},\n\nVeuillez vérifier votre adresse e-mail en cliquant sur le lien suivant :\n${verificationLink}\n\nMerci.`;
       await  sendMail(email, "Vérification de l'adresse e-mail", emailText);
-
-
-      res.status(201).json({ message: 'Professeur inscrit avec succès , Veuillez vérifier votre e-mail pour activer votre compte."' });
+      res.status(201).json({ message: 'you have successfully signed up !! , please check your e-mail and activate your account."',verificationLink });
+    
     } catch (error) {
-      res.status(500).json({ message: 'Une erreur est survenue', error: error.message });
+      res.status(500).json({ message: 'error occured', error: error.message });
     }
   };
 
@@ -47,15 +46,23 @@ exports.loginprofessor = async (req, res) => {
   const { email, password } = req.body;
   const professor = await Professor.findOne({ email });
   if (!professor) {
-    return res.status(400).json({ message: 'Email ou mot de passe incorrect' });
+    return res.status(400).json({ message: 'incorrect Email or password!!please check your input' });
+  }
+  else if(!professor.isVerified){
+    return res.status(400).json({ message: 'please activate your account so you can log in !! ' });
   }
   const isMatch = await bcrypt.compare(password, professor.password);
   if (!isMatch) {
-    return res.status(400).json({ message: 'Email ou mot de passe incorrect' });
+    return res.status(400).json({ message: 'incorrect Email or password!!please check your input' });
   }
 
   const token = jwt.sign({ professorId: professor._id }, 'secretkey', { expiresIn: '1h' });
-  res.json({ message: 'Connexion réussie', token });
+  
+  const tokenCreatedAt = new Date();
+  const tokenExpiresAt = new Date(tokenCreatedAt.getTime() +60 * 60 * 1000); 
+
+  res.json({ message: 'Successful connection', token,tokenCreatedAt: tokenCreatedAt.toISOString(),
+  tokenExpiresAt: tokenExpiresAt.toISOString(), });
 }; 
 
 
@@ -68,7 +75,7 @@ exports.createQuiz = async (req, res) => {
     const decoded = jwt.verify(token, 'secretkey');
     const professor = await Professor.findById(decoded.professorId);
     if (!professor) {
-      return res.status(400).json({ message: 'Professeur introuvable' });
+      return res.status(400).json({ message: 'Unfound Professeur' });
     }
     
     const newQuiz = new Quiz({
@@ -78,9 +85,9 @@ exports.createQuiz = async (req, res) => {
       questions
     });
     await newQuiz.save();
-    res.status(201).json({ message: 'Quiz créé avec succès', quiz: newQuiz });
+    res.status(201).json({ message: 'Quiz Successfully created ', quiz: newQuiz });
   } catch (error) {
-    return res.status(401).json({ message: 'Token invalide ou expiré' });
+    return res.status(401).json({ message: 'invalide or expired Token !! please try to log in again ' });
   }
 };
 

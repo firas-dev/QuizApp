@@ -11,10 +11,10 @@ exports.sendMail = async (to, subject, text) => {
       },
     });
     const mailOptions = {
-      from: process.env.EMAIL_USER, // Sender email
-      to, // Recipient email
-      subject, // Email subject
-      text // Email body content
+      from: process.env.EMAIL_USER, 
+      to, 
+      subject,
+      text
     };
   
     try {
@@ -29,14 +29,14 @@ exports.vMail = async (req, res) => {
     const { token } = req.query;
   
     try {
-      const professor = await Professor.findOne({ verificationToken: token });
+      const professor = await Professor.findOne({ verificationkey: token });
   
       if (!professor) {
         return res.status(400).json({ message: "Token de vérification invalide" });
       }
   
       professor.isVerified = true;
-      professor.verificationToken = undefined;
+      professor.verificationkey = undefined;
       await professor.save();
   
       res.status(200).json({ message: "Adresse e-mail vérifiée avec succès." });

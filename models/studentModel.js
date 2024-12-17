@@ -6,7 +6,9 @@ const studentSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     key: { type: String, required: true },
-    score: { type: Number, default: 0 }
+    score: { type: Number, default: 0 },
+    lastScoreUpdate: {type:Date},
+    tokenUsed: { type: Boolean, default: false }
   });
 
   const Student = mongoose.model('Student', studentSchema);

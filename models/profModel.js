@@ -7,7 +7,7 @@ const professorSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   role: { type: String, default: 'professor' },
-  verificationToken:{type: String,required: false}, 
+  verificationkey:{type: String,required: false}, 
   isVerified:{type:Boolean,default:'false'}
 });
 

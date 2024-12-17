@@ -7,10 +7,9 @@ const Quiz = require('../models/quizModel');
 // ********************* signUp for student *******************************
 exports.registerStudent = async (req, res) => {
     const { name, email, password } = req.body;
-  
     const existingStudent = await Student.findOne({ email });
     if (existingStudent) {
-      return res.status(400).json({ message: 'Cet étudiant est déjà inscrit' });
+      return res.status(400).json({ message: 'you already have an account !! try to login' });
     }
     const key = Math.random().toString(36).substring(2, 15);
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -21,8 +20,9 @@ exports.registerStudent = async (req, res) => {
       key
     });
     await newStudent.save();
-    res.status(201).json({ message: 'Étudiant inscrit avec succès', key });
+    res.status(201).json({ message: 'you have successfully signed up !! ', key });
   };
+
 
 // *************************** log in for student ***************************
 
@@ -30,14 +30,14 @@ exports.loginstudent = async (req, res) => {
   const { email, password } = req.body;
   const student = await Student.findOne({ email });
   if (!student) {
-    return res.status(400).json({ message: 'Email ou mot de passe incorrect' });
+    return res.status(400).json({ message: 'incorrect Email or password!!please check your input' });
   }
   const isMatch = await bcrypt.compare(password, student.password);
   if (!isMatch) {
-    return res.status(400).json({ message: 'Email ou mot de passe incorrect' });
+    return res.status(400).json({ message: 'incorrect Email or password!!please check your input' });
   }
-  const token = jwt.sign({ studentId: student._id }, 'secretkey', { expiresIn: '1h' });
-  res.json({ message: 'Connexion réussie', token });
+  const token = jwt.sign({ studentId: student._id }, 'secretkey', { expiresIn: '30m' });
+  res.json({ message: 'successfully connected !! ', token });
 };
 
 // ********************* Réponse au quiz ******************** 
@@ -48,18 +48,20 @@ exports.quiz = async (req, res) => {
     const decoded = jwt.verify(token, 'secretkey');
     const student = await Student.findById(decoded.studentId);
     if (!student) {
-      return res.status(400).json({ message: 'Étudiant introuvable' });
+      return res.status(400).json({ message: 'unfound student' });
     }
-
+    if (student.tokenUsed) {
+      return res.status(400).json({ message: 'Expired Token !' });
+    }
     const quiz = await Quiz.findById(quizId);
     if (!quiz) {
-      return res.status(400).json({ message: 'Quiz introuvable' });
+      return res.status(400).json({ message: 'unfound Quiz' });
     }
 
     if (!responses) {
       const quizQuestions = quiz.questions.map((question) => ({
         questionText: question.questionText,
-        options: question.options.map((option, index) => ({
+        options: question.options.map((option) => ({
           optionIndex:option.optionIndex,
           optionText: option.optionText,
 
@@ -67,7 +69,7 @@ exports.quiz = async (req, res) => {
       }));
 
       return res.json({
-        message: 'Quiz récupéré avec succès',
+        message: 'Try to respond to this Quiz',
         title: quiz.title,
         description: quiz.description,
         questions: quizQuestions,
@@ -85,11 +87,13 @@ exports.quiz = async (req, res) => {
     });
     // ***** update student score
     student.score = score;
+    student.lastScoreUpdate = new Date();
+    student.tokenUsed = true;
     await student.save();
-    res.json({ message: 'Score enregistré avec succès', score: student.score });
+    res.json({ message: 'Score saved successfully', score: student.score,token });
   } catch (error) {
     console.error(error);
-    return res.status(401).json({ message: 'Token invalide ou expiré' });
+    return res.status(401).json({ message: 'invalide or expired Token !! ' });
   }
 };
 

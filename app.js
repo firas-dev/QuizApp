@@ -2,8 +2,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const { PDFDocument, rgb } = require("pdf-lib");
-const nodemailer = require("nodemailer");
 const fs = require("fs");
 
 dotenv.config({ path: "./.env" });
@@ -35,7 +33,7 @@ const {generateCertificate,sendCertificate}=require("./controllers/certif")
 // *********************** Displaying top 3 students and sending certificate to the first winner
 app.get("/winners", async (req, res) => {
   try {
-    const winners = await Student.find().sort({ score: -1 }).limit(3);
+    const winners = await Student.find().sort({ score: -1, lastScoreUpdate: 1 }).limit(3).select("name email score -_id");
 
     if (winners.length > 0) {
       const firstWinner = winners[0];
@@ -56,7 +54,7 @@ app.get("/winners", async (req, res) => {
 // **************************** Displaying all students ************************** 
 app.get("/students", async (req, res) => {
   try {
-    const students = await Student.find().select("name email -_id");
+    const students = await Student.find().select("name email score -_id");
 
     if (!students || students.length === 0) {
       return res.status(404).json({ message: "Aucun étudiant trouvé" });

@@ -122,7 +122,7 @@
       "questionText": "What is the output of print(2 ** 3)?",
       "options": [
         { "optionText": "8","optionIndex":"a", "isCorrect": true },
-        { "optionText": "6",,"optionIndex":"b" "isCorrect": false },
+        { "optionText": "6","optionIndex":"b" ,"isCorrect": false },
         { "optionText": "9","optionIndex":"c", "isCorrect": false }
       ]
     },
