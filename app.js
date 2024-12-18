@@ -37,7 +37,7 @@ app.get("/winners", async (req, res) => {
 
     if (winners.length > 0) {
       const firstWinner = winners[0];
-      const certificateBytes = await generateCertificate(firstWinner.name);
+      const certificateBytes = await generateCertificate(firstWinner.name,firstWinner.score);
       await sendCertificate(firstWinner.email, certificateBytes);
       console.log(`Certificate sent to ${firstWinner.name} (${firstWinner.email})!`);
     }

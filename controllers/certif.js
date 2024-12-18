@@ -1,22 +1,29 @@
 const { PDFDocument, rgb } = require("pdf-lib");
 const nodemailer = require("nodemailer");
 const fs = require("fs");
-const CERTIF_PATH = "../certif.pdf";
+const CERTIF_PATH = "C:/Users/monta/Desktop/app/components/certification.pdf";
 
 // ********* certificate generation (personalized by student name )
-exports.generateCertificate = async (name) => {
+exports.generateCertificate = async (name,score) => {
   const tmp = fs.readFileSync(CERTIF_PATH);
   const pdfDoc = await PDFDocument.load(tmp);
-
   const pages = pdfDoc.getPages();
   const firstPage = pages[0];
 
- 
   const fontSize = 36;
+  const fontSize1 = 27;
   firstPage.drawText(name, {
-    x: 200,
-    y: 750,
+    x: 300,
+    y: 680, // Adjust as needed
     size: fontSize,
+    color: rgb(0, 0, 0),
+  });
+
+  // Draw the score
+  firstPage.drawText(`${score}`, {
+    x: 170,
+    y: 612, // Adjust to avoid overlapping the name
+    size: fontSize1,
     color: rgb(0, 0, 0),
   });
 

@@ -32,15 +32,17 @@ exports.vMail = async (req, res) => {
       const professor = await Professor.findOne({ verificationkey: token });
   
       if (!professor) {
-        return res.status(400).json({ message: "Token de vérification invalide" });
+        return res.status(400).json({ message: "invalide verification key" });
       }
-  
+      if (Date.now() > professor.expiresAt) {
+        return res.status(400).json({ message: 'Verification key has expired' });
+      }
       professor.isVerified = true;
       professor.verificationkey = undefined;
       await professor.save();
   
-      res.status(200).json({ message: "Adresse e-mail vérifiée avec succès." });
+      res.status(200).json({ message: "account activated ." });
     } catch (error) {
-      res.status(500).json({ message: "Une erreur est survenue", error: error.message });
+      res.status(500).json({ message: "an error has occured", error: error.message });
     }
   };

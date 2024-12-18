@@ -6,7 +6,6 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./.env" });
 const Professor = require('../models/profModel');
 const Quiz = require('../models/quizModel');
-
 const{sendMail}=require('./mailverif'); 
 
 
@@ -20,19 +19,20 @@ exports.registerProfessor = async (req, res) => {
       }
       const hashedPassword = await bcrypt.hash(password, 10);
       const verificationkey = crypto.randomBytes(32).toString("hex");
-
+      const expiresAt = Date.now() + 60*60*1000;
       const newProfessor = new Professor({
         name,
         email,
         password: hashedPassword,
         verificationkey,
         isVerified: false,
+        expiresAt,
       });
   
       await newProfessor.save();
 
       const verificationLink = `http://localhost:${process.env.PORT}/prof/verif?token=${verificationkey}`;
-      const emailText = `Bonjour ${name},\n\nVeuillez vérifier votre adresse e-mail en cliquant sur le lien suivant :\n${verificationLink}\n\nMerci.`;
+      const emailText = `Bonjour ${name},\n\nVeuillez vérifier votre adresse e-mail en cliquant sur le lien suivant :\n${verificationLink}\n\nMerci. NB !! lien de vérification est valable seulement pour une heure`;
       await  sendMail(email, "Vérification de l'adresse e-mail", emailText);
       res.status(201).json({ message: 'you have successfully signed up !! , please check your e-mail and activate your account."',verificationLink });
     
@@ -71,13 +71,11 @@ exports.loginprofessor = async (req, res) => {
 exports.createQuiz = async (req, res) => {
   const { token, title, description, questions } = req.body;
   try {
-    
     const decoded = jwt.verify(token, 'secretkey');
     const professor = await Professor.findById(decoded.professorId);
     if (!professor) {
       return res.status(400).json({ message: 'Unfound Professeur' });
     }
-    
     const newQuiz = new Quiz({
       title,
       description,
